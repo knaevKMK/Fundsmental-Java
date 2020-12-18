@@ -13,20 +13,21 @@ public class Heroes {
     private static void printHeroes(Map<String, List<Integer>> heroes) {
         heroes.entrySet().stream().sorted((a, b) -> {
             int result = Integer.compare(b.getValue().get(0), a.getValue().get(0));
-            if (result==0){
-                result= a.getKey().compareTo(b.getKey());
+            if (result == 0) {
+                result = a.getKey().compareTo(b.getKey());
             }
             return result;
-        }). forEach(herro-> {
+        }).forEach(herro -> {
             System.out.println(herro.getKey());
-            System.out.println("  HP: "+ herro.getValue().get(0));
-            System.out.println("  MP: "+ herro.getValue().get(1));
+            System.out.println("  HP: " + herro.getValue().get(0));
+            System.out.println("  MP: " + herro.getValue().get(1));
         });
     }
 
     private static void play(Map<String, List<Integer>> heroes) {
-        while (true) {
-            String[] data = scanner.nextLine().split(" - ");
+        String read;
+        while (!"End".equals(read = scanner.nextLine())) {
+            String[] data = read.split(" - ");
             String heroName = data[1];
             int value = Integer.parseInt(data[2]);
             String result;
@@ -45,8 +46,6 @@ public class Heroes {
                 case "Heal":
                     result = heal(heroName, value, heroes);
                     break;
-                case "End":
-                    return;
                 default:
                     result = null;
             }
@@ -59,7 +58,7 @@ public class Heroes {
         if (points + value > 100) {
             value = 100 - points;
         }
-        heroes.get(heroName).set(1, points + value);
+        heroes.get(heroName).set(0, points + value);
         return String.format("%s healed for %d HP!", heroName, value);
 
     }
